@@ -303,6 +303,9 @@ body {
         grid-template-columns: repeat(1, 1fr);
         grid-template-rows: auto;
     }
+    .main-recommendation-text h1 {
+        font-size: 28px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -313,7 +316,7 @@ body {
     
     .main-recommendation-text, .main-recommendation-weather {
         width: 50%;
-        margin-bottom: 0; /* 요소들 사이의 여백을 조정 */
+        margin-bottom: 0;
     }
     .main-search-area {
         flex-direction: column;
@@ -322,7 +325,7 @@ body {
         width: 100%;
     }
     .trail-recommendation-container {
-        flex-direction: row; /* 수정: 작은 화면에서 양옆으로 보이도록 설정 */
+        flex-direction: row; 
         gap: 10px;
     }
     .trail-recommendation-list {

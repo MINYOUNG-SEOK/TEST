@@ -305,11 +305,13 @@ body {
 
 @media (max-width: 480px) {
     .main-recommendation {
-        flex-direction: column; 
+        flex-direction: row; 
         padding: 20px;
     }
-    .main-recommendation-text {
-        margin-bottom: 20px; 
+    
+    .main-recommendation-text, .main-recommendation-weather {
+        width: 50%;
+        margin-bottom: 0; /* 요소들 사이의 여백을 조정 */
     }
     .main-search-area {
         flex-direction: column;
@@ -318,8 +320,8 @@ body {
         width: 100%;
     }
     .trail-recommendation-container {
-        flex-direction: column; 
-        align-items: center;
+        flex-direction: row; /* 수정: 작은 화면에서 양옆으로 보이도록 설정 */
+        gap: 10px;
     }
     .trail-recommendation-list {
         margin-right: 0;
@@ -330,6 +332,7 @@ body {
     }
     .main-mountain-list-container {
         flex-direction: column; 
+        width: 300px;
     }
     .main-mountain-list-item {
         width: 100%; 
@@ -340,7 +343,7 @@ body {
         grid-template-rows: auto;
     }
     .course-item {
-        width: 100%; 
+        width: 300px; 
         height: 100px; 
     }
 }

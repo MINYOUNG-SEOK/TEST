@@ -291,7 +291,8 @@ body {
         width: 100%; 
     }
     .trail-recommendation-details {
-        width: 100%; 
+        width: 100%;
+        height: 290px;
     }
     .course-item {
         height: 200px; 

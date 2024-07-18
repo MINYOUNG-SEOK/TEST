@@ -1,115 +1,419 @@
-/* 기본 스타일 */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-/* 앱 컨테이너 스타일 */
-#app {
-    width: 80%;
-    margin: 0 auto;
-}
-
-h1 {
-    text-align: center;
-}
-
-/* 산 목록 스타일 */
-#mountain-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 10px;
-}
-
-/* 산 항목 스타일 */
-.mountain-item {
-    position: relative;
-    width: calc(33.333% - 20px);
-    margin: 10px;
-    border-radius: 5px;
-    overflow: hidden;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-
-.mountain-item .image-container {
-    width: 100%;
-    height: 200px;
-    background-size: cover;
-    background-position: center;
-}
-
-.mountain-item h2 {
-    margin: 0;
-    padding: 10px;
-    color: #000;
-}
-
-/* 오버레이 스타일 */
-.mountain-item .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
 }
 
-.mountain-item:hover .overlay {
-    opacity: 1;
-}
-
-#pagination {
+.main-recommendation-section {
+    width: 100%;
+    height: 35vh;
     text-align: center;
+    padding: 50px 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: gainsboro;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-recommendation {
+    width: 50%;
+    height: 80%;
+    text-align: center;
+    padding: 100px 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.main-recommendation-details-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+.main-recommendation-weather {
+    text-align: center;
+    margin-top: 20px;
+    background-color: #F0F0F0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+.main-search-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
     margin-top: 20px;
 }
 
-/* 페이지네이션 버튼 스타일 */
-.pagination-button {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin: 5px;
+.main-search-area input {
+    padding: 15px 15px;
+    width: 850px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-search-area button {
+    padding: 14px 20px;
+    font-size: 16px;
     cursor: pointer;
+    border: none;
     border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.pagination-button:hover {
-    background-color: #eee;
+.city {
+    font-size: 24px;
+    font-weight: bold;
 }
 
-@media (max-width: 1024px) {
-    #app {
-        width: 90%;
+.temperature {
+    font-size: 48px;
+    margin: 20px 0;
+}
+
+.graph {
+    font-size: 18px;
+    padding: 10px;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-mountain-list-section {
+    padding: 20px 0;
+    text-align: center;
+}
+
+.main-mountain-list-section h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.main-mountain-list-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-mountain-list {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 20px;
+    align-items: center;
+    /* 아이템을 세로로 가운데 정렬 */
+}
+
+.main-mountain-list-item-title {
+    text-align: center;
+    margin-top: 10px;
+    /* 산 이름을 이미지 아래로 배치 */
+    font-size: 14px;
+    /* 글자 크기 조정 */
+    width: 100px;
+    /* 이미지와 동일한 너비로 조정 */
+}
+
+
+.main-mountain-list-item {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    width: 200px;
+    height: 250px;
+    /* 높이를 조정하여 이미지가 잘 보이도록 수정 */
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-repeat: no-repeat;
+}
+
+.skeleton {
+    background-color: #e0e0e0;
+    background-image: linear-gradient(90deg, #e0e0e0, #f0f0f0, #e0e0e0);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite linear;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
     }
 
-    .mountain-item {
-        width: calc(50% - 20px);
+    100% {
+        background-position: -200% 0;
     }
 }
+
+.main-mountain-list-overlay {
+    display: none;
+    /* 기본적으로 숨기기 */
+}
+
+
+.main-mountain-list-item .main-mountain-list-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 0 0 10px 10px;
+    display: none;
+    /* 기본적으로 숨기기 */
+}
+
+
+.main-mountain-list-item:hover .main-mountain-list-overlay {
+    display: block;
+}
+
+.prev-btn,
+.next-btn {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+}
+
+.prev-btn {
+    left: -40px;
+}
+
+.next-btn {
+    right: -40px;
+}
+
+.main-reviews-area {
+    width: 100%;
+    text-align: center;
+    padding: 50px 0;
+    background-color: gainsboro;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-reviews-area blockquote {
+    font-size: 24px;
+    margin: 0;
+    color: #555;
+}
+
+.main-reviews-area button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.trail-recommendation-section {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.trail-recommendation-section h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.trail-recommendation-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.trail-recommendation-list {
+    height: 330px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+    border-radius: 10px;
+    justify-content: space-between;
+}
+
+.trail-recommendation-list button {
+    width: 200px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #F0F0F0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.trail-recommendation-details {
+    width: 650px;
+    height: 290px;
+    padding: 20px;
+    background-color: #E0E0E0;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-courses {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.main-courses h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.main-course-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 450px);
+    grid-template-rows: repeat(3, 200px);
+    gap: 20px;
+    justify-content: center;
+}
+
+.main-course-item {
+    background-color: #D0D0D0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-recommendation {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.main-recommendation-text {
+    text-align: center;
+    flex: 1;
+}
+
+.main-recommendation-text p {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.main-recommendation-text h1 {
+    margin: 10px 0;
+    font-size: 32px;
+}
+
+
 
 @media (max-width: 768px) {
-    #app {
-        width: 95%;
+    .main-recommendation {
+        width: 80%;
     }
 
-    .mountain-item {
-        width: calc(50% - 20px);
+    .main-search-area input {
+        width: 100%;
+    }
+
+    .trail-recommendation-details {
+        width: 100%;
+    }
+
+    .main-course-item {
+        height: 200px;
+        width: 400px;
+    }
+
+    .main-course-grid {
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: auto;
+    }
+
+    .main-recommendation-text h1 {
+        font-size: 28px;
     }
 }
 
 @media (max-width: 480px) {
-    .mountain-item {
-        width: calc(100% - 20px);
+    .main-recommendation {
+        flex-direction: row;
+        padding: 20px;
+    }
+
+    .main-recommendation-text,
+    .main-recommendation-weather {
+        width: 50%;
+        margin-bottom: 0;
+    }
+
+    .main-search-area {
+        flex-direction: column;
+    }
+
+    .main-search-area input {
+        width: 100%;
+    }
+
+    .trail-recommendation-container {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .trail-recommendation-list {
+        margin-right: 0;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .trail-recommendation-details {
+        width: 100%;
+    }
+
+    .main-mountain-list-container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+
+
+    .main-course-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .main-course-item {
+        width: 300px;
+        height: 100px;
     }
 }

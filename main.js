@@ -1,96 +1,118 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const apiUrl = 'http://openapi.forest.go.kr/openapi/service/cultureInfoService/gdTrailInfoOpenAPI';
-    const imageApiUrl = 'http://openapi.forest.go.kr/openapi/service/cultureInfoService/gdTrailInfoImgOpenAPI';
-    const serviceKey = '키값 여기에 넣어주세용';
-    const itemsPerPage = 6; // 페이지당 항목 수
-    let currentPage = 1; // 현재 페이지 번호
-    const noImageUrl = 'https://via.placeholder.com/200?text=No+Image'; // "No Image" 이미지 URL
+const API_KEY =
+  "6OOYIpPBcuzSlb9ySCOig5hl2yyAicP6cs%2BG7wM3kb%2B1AdFH9fn5nAymyaCjxrnF5YQnIGxoSnIZlT9cvhjrRg%3D%3D";
+const itemsPerPage = 5; // 페이지당 항목 수
+let currentPage = 1; // 현재 페이지 번호
+let displayedMountainNames = new Set(); // 이미 표시된 산 이름을 추적하기 위한 Set
 
-    // 산 데이터를 가져오는 함수
-    function fetchMountains(page) {
-        // API 호출 URL 생성
-        const url = `${apiUrl}?serviceKey=${serviceKey}&pageNo=${page}&numOfRows=${itemsPerPage}&_type=json`;
+// 산 데이터를 가져오는 함수
+function fetchMountains(page) {
+  const apiUrl = `http://apis.data.go.kr/1400000/service/cultureInfoService2/mntInfoOpenAPI2?serviceKey=${API_KEY}&pageNo=${page}&numOfRows=${itemsPerPage}&_type=json`;
 
-        // API 호출
-        fetch(url)
-            .then(response => response.json()) // JSON 형태로 응답을 파싱
-            .then(data => {
-                console.log('Fetched data:', data); // 가져온 데이터 콘솔에 출력
-                displayMountains(data.response.body.items.item); // 산 데이터를 화면에 표시
-                setupPagination(data.response.body.totalCount, page); // 페이지네이션 설정
-            })
-            .catch(error => console.error('Error fetching data:', error)); // 에러 처리
+  fetch(apiUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.text(); // JSON 대신 텍스트로 응답을 먼저 받음
+    })
+    .then((text) => {
+      try {
+        const data = JSON.parse(text); // 텍스트를 JSON으로 파싱
+        const items = data.response.body.items.item;
+        console.log("Fetched mountains:", items); // 데이터 확인용 로그
+        displayMountains(items);
+      } catch (error) {
+        console.error("Error parsing JSON:", error, "Response Text:", text);
+      }
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+}
+
+// 산 데이터를 화면에 표시하는 함수
+function displayMountains(mountains) {
+  const mountainList = document.querySelector(".main-mountain-list");
+  mountainList.innerHTML = ""; // 초기화
+  const promises = mountains.map((mountain) => {
+    // 동일한 산 이름을 무시
+    if (displayedMountainNames.has(mountain.mntiname)) {
+      return Promise.resolve();
     }
+    displayedMountainNames.add(mountain.mntiname);
 
-    // 산 데이터를 화면에 표시하는 함수
-    function displayMountains(mountains) {
-        const mountainList = document.getElementById('mountain-list'); // 산 목록을 표시할 HTML 요소
-        mountainList.innerHTML = ''; // 기존 내용을 초기화
+    // 스켈레톤 로딩 추가
+    const listItem = document.createElement("div");
+    listItem.className = "main-mountain-list-item skeleton";
+    mountainList.appendChild(listItem);
 
-        mountains.forEach(mountain => {
-            // 각 산에 대해 이미지를 가져오는 함수 호출
-            fetchImage(mountain.mntncd)
-                .then(imageUrl => {
-                    const mountainItem = document.createElement('div');
-                    mountainItem.className = 'mountain-item';
-                    mountainItem.innerHTML = `
-                        <div class="image-container" style="background-image: url(${imageUrl})">
-                            <div class="overlay">
-                                <h3>${mountain.subnm}</h3> <!-- 산 부제 -->
-                                <p>지역: ${mountain.areanm}</p> <!-- 지역명 -->
-                                <p>높이: ${mountain.mntheight}m</p> <!-- 산 높이 -->
-                            </div>
-                        </div>
-                        <div class="title">
-                        <h2>${mountain.mntnm}</h2> <!-- 산 이름 -->
-                        </div>
-                    `;
-                    mountainList.appendChild(mountainItem); // 산 항목을 목록에 추가
-                })
-                .catch(error => console.error('Error fetching image:', error));
-        });
-    }
+    return fetchImage(mountain.mntilistno).then((imageUrl) => {
+      console.log("Mountain data:", mountain); // 산 데이터 확인용 로그
+      if (imageUrl) {
+        listItem.className = "main-mountain-list-item";
+        listItem.style.backgroundImage = `url(${imageUrl})`;
+        listItem.innerHTML = `
+                    <div class="main-mountain-list-overlay">
+                        <p>산 부제: ${mountain.mntitop}</p> <!-- 산 부제 -->
+                        <p>지역: ${mountain.mntiadd}</p> <!-- 지역명 -->
+                        <p>높이: ${mountain.mntihigh}m</p> <!-- 산 높이 -->
+                    </div>
+                    
+                        <h2>${mountain.mntiname}</h2> <!-- 산 이름 -->
+      
+                `;
+      } else {
+        listItem.classList.remove("skeleton"); // 이미지가 없을 경우 스켈레톤 클래스 제거
+      }
+    });
+  });
 
-    // 산 이미지 데이터를 가져오는 함수
-    function fetchImage(mntncd) {
-        return new Promise((resolve, reject) => {
-            const url = `${imageApiUrl}?searchWrd=${mntncd}&ServiceKey=${serviceKey}&_type=json`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.response.body.items && data.response.body.items.item.length > 0) {
-                        const image = data.response.body.items.item[0].image; // 첫 번째 이미지를 사용
-                        const imageUrl = `http://www.forest.go.kr/swf/foreston/mountain/${image}`;
-                        resolve(imageUrl);
-                    } else {
-                        resolve(noImageUrl);
-                    }
-                })
-                .catch(error => {
-                    resolve(noImageUrl);
-                    console.error('Error fetching image:', error);
-                });
-        });
-    }
+  Promise.all(promises).catch((error) =>
+    console.error("Error displaying mountains:", error)
+  );
+}
 
-    // 페이지네이션을 설정하는 함수
-    function setupPagination(totalItems, currentPage) {
-        const pagination = document.getElementById('pagination'); // 페이지네이션을 표시할 HTML 요소
-        pagination.innerHTML = ''; // 기존 페이지네이션 초기화
-        const totalPages = Math.ceil(totalItems / itemsPerPage); // 전체 페이지 수 계산
+// 산 이미지 데이터를 가져오는 함수
+function fetchImage(mntilistno) {
+  return new Promise((resolve, reject) => {
+    const imageApiUrl = `http://apis.data.go.kr/1400000/service/cultureInfoService2/mntInfoImgOpenAPI2?serviceKey=${API_KEY}&mntiListNo=${mntilistno}&_type=json`;
 
-        // 각 페이지 버튼을 생성하여 추가
-        for (let i = 1; i <= totalPages; i++) {
-            const button = document.createElement('button');
-            button.className = 'pagination-button';
-            button.innerText = i; // 버튼에 페이지 번호 표시
-            if (i === currentPage) {
-                button.style.fontWeight = 'bold'; // 현재 페이지 버튼을 굵게 표시
-            }
-            button.addEventListener('click', () => fetchMountains(i)); // 버튼 클릭 시 해당 페이지로 이동
-            pagination.appendChild(button); // 페이지 버튼을 페이지네이션에 추가
+    fetch(imageApiUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
         }
-    }
+        return response.json();
+      })
+      .then((data) => {
+        const items = data.response.body.items.item;
+        if (items && items.length > 0) {
+          const imageUrl = `http://www.forest.go.kr/images/data/down/mountain/${items[0].imgfilename}`;
+          resolve(imageUrl);
+        } else {
+          resolve(null);
+        }
+      })
+      .catch((error) => {
+        resolve(null);
+        console.error("Error fetching image:", error);
+      });
+  });
+}
 
-    fetchMountains(currentPage); // 초기 페이지 데이터 가져오기
+document.addEventListener("DOMContentLoaded", () => {
+  fetchMountains(currentPage);
+
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+
+  prevBtn.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      fetchMountains(currentPage);
+    }
+  });
+
+  nextBtn.addEventListener("click", () => {
+    currentPage++;
+    fetchMountains(currentPage);
+  });
 });

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const apiUrl = 'http://openapi.forest.go.kr/openapi/service/cultureInfoService/gdTrailInfoOpenAPI';
     const imageApiUrl = 'http://openapi.forest.go.kr/openapi/service/cultureInfoService/gdTrailInfoImgOpenAPI';
-    const serviceKey = '6OOYIpPBcuzSlb9ySCOig5hl2yyAicP6cs%2BG7wM3kb%2B1AdFH9fn5nAymyaCjxrnF5YQnIGxoSnIZlT9cvhjrRg%3D%3D';
+    const serviceKey = '키값 여기에 넣어주세용';
     const itemsPerPage = 6; // 페이지당 항목 수
     let currentPage = 1; // 현재 페이지 번호
     const noImageUrl = 'https://via.placeholder.com/200?text=No+Image'; // "No Image" 이미지 URL

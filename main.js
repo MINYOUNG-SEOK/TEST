@@ -1,5 +1,5 @@
 const API_KEY =
-  "6OOYIpPBcuzSlb9ySCOig5hl2yyAicP6cs%2BG7wM3kb%2B1AdFH9fn5nAymyaCjxrnF5YQnIGxoSnIZlT9cvhjrRg%3D%3D";
+  "";
 const itemsPerPage = 5; // 페이지당 항목 수
 let currentPage = 1; // 현재 페이지 번호
 let displayedMountainNames = new Set(); // 이미 표시된 산 이름을 추적하기 위한 Set

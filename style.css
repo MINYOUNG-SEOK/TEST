@@ -320,6 +320,7 @@ body {
     align-items: flex-start;
     text-align: left;
     padding: 20px;
+    cursor: pointer;
 }
 
 .theme-course-title {
